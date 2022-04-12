@@ -23,13 +23,13 @@ public class BaseTest : MonoBehaviour
         Vector3 v3 = new Vector3(p.x+1, p.y, p.z);
         Instantiate(Selection.activeTransform, v3, Quaternion.identity);
     }
-    [MenuItem("dema/two", true)]
+    [MenuItem("德玛/two", true)]
     static bool testSecondParam2()
     {
         return Selection.activeGameObject != null;
     }
     // 文件夹右键菜单
-    [MenuItem("GameObject/MyCategory/德玛Custom Game Object", false, 10)]
+    [MenuItem("GameObject/德玛/德玛Custom Game Object", false, 10)]
     static void CreateCustomGameObject(MenuCommand menuCommand)
     {
         // Create a custom game object
@@ -42,7 +42,7 @@ public class BaseTest : MonoBehaviour
     }
 
     // 给inspector的component添加右键菜单
-    [MenuItem("CONTEXT/Rigidbody/德玛Do Something")]
+    [MenuItem("CONTEXT/Rigidbody/德玛")]
     static void DoSomething(MenuCommand command)
     {
         // Rigidbody body = (Rigidbody)command.context;
@@ -51,7 +51,28 @@ public class BaseTest : MonoBehaviour
         Debug.Log("Changed Rigidbody's Mass to " + body.mass + " from Context Menu...");
     }
 
-    [MenuItem("德玛/selectionSth")]
+    //添加菜单
+    [MenuItem(@"德玛/获取选中的节点")]
+    public static void GetTransforms()
+    {
+        Dictionary<string, Vector3> dic = new Dictionary<string, Vector3>();
+        //transforms是Selection类的静态字段，其返回的是选中的对象的Transform数组
+        Transform[] transforms = Selection.transforms;
+
+        //将选中的对象的postion保存在字典中
+        for (int i = 0; i < transforms.Length; i++)
+        {
+            dic.Add(transforms[i].name, transforms[i].position);
+        }
+
+        //将字典中的信息打印出来
+        foreach (Transform item in transforms)
+        {
+            Debug.Log(item.name + ":" + item.position);
+        }
+    }
+
+    [MenuItem("德玛/过滤选择")]
     static void debugSelections()
     {
         Object[] activeGos = Selection.GetFiltered(typeof(GameObject), SelectionMode.Editable | SelectionMode.TopLevel);
@@ -60,4 +81,6 @@ public class BaseTest : MonoBehaviour
             Debug.Log(activeGos[i].name);
         }
     }
+
+
 }
